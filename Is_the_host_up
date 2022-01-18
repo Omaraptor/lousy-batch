@@ -1,0 +1,24 @@
+REM This script is called from scheduled tasks manager every 5 minutes.
+REM
+REM test for active 192.168.1.254 (Important host)
+REM Return ping = UP
+REM No return ping = Down
+REM Save result in root of IIS server running on this PC.
+
+FOR /F "tokens=1 delims= " %%A IN ('PING -n 1 192.168.1.254') DO IF "%%A"=="Reply" goto Reply
+
+REM No Reply exit status 1
+echo DOWN >C:\Inetpub\wwwroot\index.html
+
+exit /b 1
+@echo YOU SHOULD NOT SEE THIS BECAUSE THE SCRIPT SHOULD HAVE EXITED WITH A CODE 1 MESSAGE!
+pause 
+
+
+:Reply
+
+echo UP >C:\Inetpub\wwwroot\index.html
+
+exit /b 0
+
+Pause
